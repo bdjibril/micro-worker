@@ -43,8 +43,5 @@
     "underscore": "^1.8.3",
     "feathers-client": "^0.2.0",
     "body-parser": "^1.14.0"
-  },
-  "publishConfig": {
-    "registry": "http://localhost:4873/"
   }
 }
