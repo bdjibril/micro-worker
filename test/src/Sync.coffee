@@ -15,5 +15,5 @@ describe "Sync", ->
     it "make sure the unimplemented function returns an error", (done) ->
 
       sync.findEntitiesToSync (err, result) ->
-        assert.equal err , "UNIMPLEMENTED (findEntitiesToSync): This method needs to be implemented in the Subclass"
+        assert.equal err , "UNIMPLEMENTED (findEntitiesToSync): This method needs to be implemented in the Sync Subclass"
         done()

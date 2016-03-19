@@ -17,7 +17,7 @@
     return describe("Is Syncing", function() {
       return it("make sure the unimplemented function returns an error", function(done) {
         return sync.findEntitiesToSync(function(err, result) {
-          assert.equal(err, "UNIMPLEMENTED (findEntitiesToSync): This method needs to be implemented in the Subclass");
+          assert.equal(err, "UNIMPLEMENTED (findEntitiesToSync): This method needs to be implemented in the Sync Subclass");
           return done();
         });
       });
