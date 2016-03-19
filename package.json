@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/bah_djibril/micro-workers.git"
+    "url": "git+ssh://git@github.com:bdjibril/micro-worker.git"
   },
   "keywords": [
     "microworkers",
@@ -25,7 +25,7 @@
   ],
   "author": "Bah Djibril",
   "license": "MIT",
-  "homepage": "https://bitbucket.org/bah_djibril/micro-workers#readme",
+  "homepage": "https://github.com/bdjibril/micro-worker",
   "devDependencies": {
     "coffeelint": "^1.13.1",
     "grunt": "^0.4.5",
