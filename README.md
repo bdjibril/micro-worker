@@ -16,7 +16,6 @@ Most of the classes require a configuration object containing the server informa
  
 ```coffeescript
 config =
-  heartBeatInterval: 1000
   serverUrl: "http://localhost"
   serverPort: 3000
   staticPath: "www"
@@ -186,6 +185,7 @@ Currently not accepting any pull requests but feel free to email suggestions to 
 
 ## Release History
 
+* 0.1.11 Performance Improvements : **The workers get registered and unregistered in realtime using sockets connect and disconnect events as opposed to the timed heartbeat mechanism used before**
 * 0.1.7 Bug fixes for **Cannot read property 'updateLastUsed' of undefined**
 * 0.1.6 Listerner class improvements
 * 0.1.5 Added the endpoint listerner class
