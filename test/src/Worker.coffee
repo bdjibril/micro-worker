@@ -16,4 +16,8 @@ describe "Worker", ->
   describe "Is alive and Working", ->
     it "makes sure the worker has a UUID ", (done) ->
       assert.equal UUID_REGEX.test(worker.workerUuid) , true
-      done()
+
+      # delay the done wo that we can se server logs
+      setTimeout(() ->
+        done()
+      , 1000)

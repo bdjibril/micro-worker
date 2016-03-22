@@ -14,6 +14,7 @@
     workerHeartbeat = void 0;
     uuid = "937972-35-25-345325";
     type = "genericWorker";
+    return;
     beforeEach(function() {
       workerHeartbeat = new WorkerHeartbeat(config);
       return workerHeartbeat.beginLife(type, uuid, function(error, h) {

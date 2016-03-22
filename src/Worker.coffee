@@ -28,8 +28,15 @@ class Worker
 
     @workerUuid = uuid.v4()
 
-    # Start heartbeats
-    @createHeartbeats()
+    # test connection (Maybe can use this to get the clients; push new workers and remove them(keep in memory on hhe server))
+    # emit register worker with {type,ID}
+
+    socket.on "connect", () =>
+      console.log "Worker Connected. Type : #{@workerType}, ID : #{@workerUuid}"
+      socket.emit "registerworker", {
+        type: @workerType
+        uuid: @workerUuid
+      }
 
     # Satart listening for work
     @createListener()
@@ -61,22 +68,6 @@ class Worker
 
       # Do work with the data. Every Worker Subclass should override doWork
       doWork data, goToNextStep
-
-  createHeartbeats: =>
-
-    heartbeatService = @app.service "heartbeat"
-
-    heartbeatService.create {type: @workerType, uuid: @workerUuid } , (error, heartbeat) =>
-      unless error
-        console.log "Success creating heartbeat", heartbeat
-        # Now I should be alive
-        @workerHeartbeat.beginLife heartbeat.type, heartbeat.uuid, (error, heart) ->
-          unless error
-            # Nothing Here
-            console.log "Created", heartbeat.type, heartbeat.uuid
-
-      else
-        console.log error
 
   doWork: (data, callback) ->
     # Every Sub Class should implement their own dowork

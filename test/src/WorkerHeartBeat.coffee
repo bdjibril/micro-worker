@@ -11,6 +11,8 @@ describe "WorkerHeartbeat", ->
   uuid = "937972-35-25-345325"
   type = "genericWorker"
 
+  return
+
   beforeEach ->
     workerHeartbeat = new WorkerHeartbeat config
 

@@ -19,7 +19,9 @@
     return describe("Is alive and Working", function() {
       return it("makes sure the worker has a UUID ", function(done) {
         assert.equal(UUID_REGEX.test(worker.workerUuid), true);
-        return done();
+        return setTimeout(function() {
+          return done();
+        }, 1000);
       });
     });
   });

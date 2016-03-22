@@ -66,7 +66,7 @@ class Sync
       entityEndpointService.find _id: entity._id, (error, matchingEntities) ->
         unless error? or matchingEntities.length is 0
           # Found it
-          entityEndpointService.patch matchingEntities[0]._id, last_sync_at: new Date, (error, updatedEntity) ->
+          entityEndpointService.patch matchingEntities[0]._id, last_sync_at: (new Date).getTime(), (error, updatedEntity) ->
             unless error
               innerCallback null, updatedEntity
 

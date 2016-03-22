@@ -1,14 +1,9 @@
-heartbeats = require "heartbeats"
 feathers = require "feathers-client"
 io = require "socket.io-client"
 
 class WorkerHeartbeat
 
   constructor: (@config) ->
-
-    @HEARTBEAT_INTERVAL = @config.heartBeatInterval or 5000
-
-    @HEARTBEAT_EVENT_INCREMENT = @config.heartBeatEventIncrement or 1
 
     address = "#{@config.serverUrl}:#{@config.serverPort}"
 
@@ -21,45 +16,17 @@ class WorkerHeartbeat
     @heartbeatService = app.service "heartbeat"
 
 
-  beginLife: (type, uuid, callback) =>
-    heart = heartbeats.createHeart @HEARTBEAT_INTERVAL
+  createHeartbeats: (heartbeat, callback) ->
 
-    # Create Immediatly
-    newHeartbeat =
-      last_beat_at: new Date
-      uuid: uuid
-      type: type
-
-    @heartbeatService.create newHeartbeat, (error, heartbeat) ->
-      console.log "People now know I am alive", heartbeat
-
-    heart.createEvent @HEARTBEAT_EVENT_INCREMENT, (heartbeat, last) =>
-      #console.log "Hi, I' am a #{type} with and ID of #{uuid} and I am still alive. I was born #{heart.age * HEARTBEAT_INTERVAL / 1000 } secs ago"
-      # Tell People I am still alive
-      @heartbeatService.find uuid: uuid ,(error, heartbeats) =>
-
-        unless error? or heartbeats.length is 0
-          # Found it
-          @heartbeatService.patch heartbeats[0]._id, last_beat_at: new Date, (error, heartbeat) ->
-            #console.log "People now know I still have a heartbeat", heartbeat
-
-        else
-          # Resurected from nowhere (unknown ID) Must be a ghost
-          newHeartbeat =
-            last_beat_at: new Date
-            uuid: uuid
-            type: type
-
-          @heartbeatService.create newHeartbeat, (error, heartbeat) ->
-            #console.log "People now know I am alive again (resurected)", heartbeat
-
-      # No error Here return that heart so we ca kill it ;)
-      callback null, heart
-
+    @heartbeatService.create  heartbeat, (error, heartbeat) ->
+      unless error
+        callback null, "Success regigistering heartbeat, for uuid: #{heartbeat.uuid} "
+      else
+        console.log error
 
   findNextWorker: (type, callback) ->
     # Tell People I am still alive
-    @heartbeatService.find type: type ,(error, heartbeats) ->
+    @heartbeatService.find {type: type, $limit: 1} ,(error, heartbeats) ->
       unless error? or heartbeats.length is 0
         # Found some workers return the first one
         console.log "Next worker heartbeat is", heartbeats[0]
@@ -71,22 +38,28 @@ class WorkerHeartbeat
 
   updateLastUsed: (uuid, type, callback) =>
     # Tell People I am still alive
+    @heartbeatService.find {uuid: uuid, $limit: 1} ,(error, heartbeats) =>
+
+      dt = new Date
+
+      unless error? or heartbeats.length is 0
+        # Found it
+        @heartbeatService.patch heartbeats[0]._id or heartbeats[0].id, last_used_at: dt, (error, heartbeat) ->
+          console.log "Last used updated", heartbeat
+
+  deregisterWorkerHeartBeat: (uuid, callback) =>
     @heartbeatService.find uuid: uuid ,(error, heartbeats) =>
 
       unless error? or heartbeats.length is 0
         # Found it
-        @heartbeatService.patch heartbeats[0]._id, last_used_at: new Date, (error, heartbeat) ->
-          console.log "Last used updated", heartbeat
+        @heartbeatService.remove heartbeats[0]._id or heartbeats[0].id, null , (error) ->
+          if error
+            callback "error while unregistering the workerHeartbeat #{error}"
+          else
+            callback null, "Successfully Unregistered the heartbeat for uuid: #{uuid}"
 
       else
-        # Resurected from nowhere (unknown ID) Must be a ghost
-        newHeartbeat =
-          last_beat_at: new Date
-          last_used_at: new Date
-          uuid: uuid
-          type: type
-
-        @heartbeatService.create newHeartbeat, (error, heartbeat) ->
-          console.log "Recreated with Last Used", heartbeat
+        console.log "heartbeat not found", error, heartbeats, uuid
+        callback "heartbeat not found", heartbeats
 
 module.exports = WorkerHeartbeat

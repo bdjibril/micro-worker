@@ -2,8 +2,13 @@ feathers = require "feathers"
 hooks = require "feathers-hooks"
 bodyParser = require "body-parser"
 db = require "feathers-nedb"
+memory = require "feathers-memory"
+
+socketio = feathers.socketio
 
 dbHooks = require "./hooks"
+
+WorkerHeartbeat = require "./WorkerHeartbeat"
 
 class Server
 
@@ -13,14 +18,35 @@ class Server
 
     address = "#{config.serverUrl}:#{config.serverPort}"
 
+    workerHeartbeat = new WorkerHeartbeat config
+
     # Need to only expose what is needed
     app = feathers()
       .configure feathers.rest()
-      .configure feathers.socketio()
+      .configure socketio( (io) ->
+        io.on "connection", (socket) ->
+          console.log "Conected event from the server"
+          wInfo = null
+          socket.on "registerworker", (workerInfo) ->
+            wInfo = workerInfo
+            wInfo.socketId = socket.id
+            console.log "Registering worker", wInfo
+
+            workerHeartbeat.createHeartbeats wInfo, (err, result) ->
+              unless err
+                console.log result
+
+            socket.on "disconnect", () ->
+              console.log "Disconnecting worker", wInfo
+              workerHeartbeat.deregisterWorkerHeartBeat wInfo.uuid, (err, result) ->
+                unless err
+                  console.log result
+
+       )
       .configure hooks()
       .use bodyParser.json()
       # For workers heartbeat
-      .use "/heartbeat", db "heartbeat"
+      .use "/heartbeat", memory "heartbeat"
 
     # Hooks for workers heartbeat endpoint
     (app.service "heartbeat").before(
