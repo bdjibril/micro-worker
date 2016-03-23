@@ -105,7 +105,7 @@ class Worker
         console.log "This was the last step of the flow. Nothing to do with", data
 
         # send a successful sync result
-        syncResultObject = @generateSyncResult data, null
+        syncResultObject = @generateSyncResult data, @workerType, null
 
         # Create a sync result
         @syncEndpointService.create syncResultObject, (error, sync) ->
@@ -113,7 +113,7 @@ class Worker
     else
 
       # send an error sync result
-      syncResultObject = @generateSyncResult data, error
+      syncResultObject = @generateSyncResult data, @workerType, error
 
       # Create a sync result
       @syncEndpointService.create syncResultObject, (error, sync) ->

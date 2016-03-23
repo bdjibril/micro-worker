@@ -13,7 +13,7 @@ _ = require "underscore"
 
 class Sync
 
-  constructor: (@config, @syncChecks, @entityEndpoint, @fix = true, @SYNC_ENDPOINT = "sync", @SYNC_INTERVAL = 10000, @CONCURRENT_SYNC = 10) ->
+  constructor: (@config, @syncChecks, @entityEndpoint, @fix = true, @SYNC_ENDPOINT = "sync", @SYNC_ENTITY = "data", @SYNC_INTERVAL = 10000, @CONCURRENT_SYNC = 10) ->
 
     address = "#{@config.serverUrl}:#{@config.serverPort}"
 
@@ -26,8 +26,17 @@ class Sync
     @entitySyncEndpointService = @app.service @SYNC_ENDPOINT
     @entityEndpointService = @app.service @entityEndpoint
 
+    # Create a throttle Sync
+    @throttledStartSync = _.throttle @startSync, @SYNC_INTERVAL
+
     # Starting the first instance of sync
-    setTimeout @startSync, @SYNC_INTERVAL
+    @throttledStartSync()
+
+    # Scheduling sync
+    setInterval( () =>
+      @throttledStartSync()
+    ,
+    @SYNC_INTERVAL )
 
   # using fat arrow since this is used as a callback
   startSync: =>
@@ -41,21 +50,18 @@ class Sync
     if error or entities.length is 0
       console.log "No SYNCABLE entities found will not attempt any sync"
 
-      setTimeout @startSync, @SYNC_INTERVAL
+      @throttledStartSync()
 
     else
       # add where last sync is < some timeout
 
-      startSyncFunc = @startSync
-      syncInterval = @SYNC_INTERVAL
-
-      async.eachLimit entities, @CONCURRENT_SYNC, @syncEntity, (err) ->
+      async.eachLimit entities, @CONCURRENT_SYNC, @syncEntity, (err) =>
         if err
           console.log "Some entities did not Go trough all the tests.", err
         else
           console.log "All entities Went trough all the tests."
 
-        setTimeout startSyncFunc, syncInterval
+        @throttledStartSync()
 
   # using fat arrow since this is used as a callback
   syncEntity: (entity, callback) =>
@@ -64,8 +70,10 @@ class Sync
 
     updateLastSync = (innerCallback) ->
       entityEndpointService.find _id: entity._id, (error, matchingEntities) ->
+        console.log "11111"
         unless error? or matchingEntities.length is 0
           # Found it
+          console.log "11111", matchingEntities
           entityEndpointService.patch matchingEntities[0]._id, last_sync_at: (new Date).getTime(), (error, updatedEntity) ->
             unless error
               innerCallback null, updatedEntity
@@ -99,7 +107,7 @@ class Sync
             console.log "Successfully created the fix", result
 
 
-    syncResultObject = @generateSyncResult device: entity, returnError
+    syncResultObject = @generateSyncResult data: entity, @SYNC_ENDPOINT, returnError, @SYNC_ENTITY
 
     # Create a sync result
     @entitySyncEndpointService.create syncResultObject, (error, sync) ->
