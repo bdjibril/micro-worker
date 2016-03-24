@@ -13,7 +13,7 @@ _ = require "underscore"
 
 class Sync
 
-  constructor: (@config, @syncChecks, @entityEndpoint, @fix = true, @SYNC_ENDPOINT = "sync", @SYNC_ENTITY = "data", @SYNC_INTERVAL = 10000, @CONCURRENT_SYNC = 10) ->
+  constructor: (@config, @syncChecks, @entityEndpoint, @fix = true, @SYNC_ENDPOINT = "sync", @SYNC_ENTITY = "data", @SYNC_INTERVAL = 30000, @CONCURRENT_SYNC = 15) ->
 
     address = "#{@config.serverUrl}:#{@config.serverPort}"
 
@@ -70,10 +70,8 @@ class Sync
 
     updateLastSync = (innerCallback) ->
       entityEndpointService.find _id: entity._id, (error, matchingEntities) ->
-        console.log "11111"
         unless error? or matchingEntities.length is 0
           # Found it
-          console.log "11111", matchingEntities
           entityEndpointService.patch matchingEntities[0]._id, last_sync_at: (new Date).getTime(), (error, updatedEntity) ->
             unless error
               innerCallback null, updatedEntity
