@@ -2,6 +2,8 @@
 
 This repository contains a framework that helps create `scalable` and `inter-connected` nodejs `microservices`.
 
+[![NPM](https://nodei.co/npm/micro-worker.png)](https://nodei.co/npm/micro-worker/)
+
 ## Installation
 ```bash
   npm install micro-workers --save
