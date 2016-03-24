@@ -1,5 +1,27 @@
 # Micro Workers
+<div align="center">
 
+
+<br/>
+<b>M</b>(icro) <b>W</b>(orkers)
+<br/><br/>
+
+ <a href="https://www.bithound.io/github/bdjibril/micro-worker">
+ <img src="https://www.bithound.io/github/bdjibril/micro-worker/badges/score.svg" alt="bitHound Score">
+</a>
+
+<a href="https://www.npmjs.com/package/micro-worker">
+  <img alt="NPM Downloads" src="https://img.shields.io/npm/dt/micro-worker.svg?style=flat-square"/>
+</a>
+
+<a href="https://travis-ci.org/bdjibril/micro-worker">
+  <img src="https://travis-ci.org/bdjibril/micro-worker.svg?branch=master" alt="Build Status"/>
+</a>
+
+
+<br/>
+<br/>
+</div>
 This repository contains a framework that helps create `scalable` and `inter-connected` nodejs `microservices`.
 
 [![NPM](https://nodei.co/npm/micro-worker.png)](https://nodei.co/npm/micro-worker/)
