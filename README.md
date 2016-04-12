@@ -32,7 +32,7 @@ This repository contains a framework that helps create `scalable` and `inter-con
 ```
 
 ## Diagram
-[![Diagram](https://cdn.rawgit.com/bdjibril/micro-worker/master/assets/Worker%20Plateform%20Diagram.png)](https://github.com/bdjibril/micro-worker)
+[![Diagram](https://cdn.rawgit.com/bdjibril/micro-worker/master/assets/Worker%20Plateform%20Diagram.svg)](https://cdn.rawgit.com/bdjibril/micro-worker/master/assets/Worker%20Plateform%20Diagram.svg)
 
 ## Usage
 Most of the classes require a configuration object containing the server information, as well as the endpoints. This can be created on the fly inside of your programs or passed in as a module.
