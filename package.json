@@ -1,6 +1,6 @@
 {
   "name": "micro-worker",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "This repository contains a framework that helps create scalable and interconnected nodejs microservices.",
   "main": "index.js",
   "scripts": {
