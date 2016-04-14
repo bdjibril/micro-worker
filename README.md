@@ -207,8 +207,9 @@ new SampleSync config
 npm test
 ```
 
-## Contributing
-Currently not accepting any pull requests but feel free to email suggestions to **dbdjbah@gmail.com**
+## LICENSE
+
+[The MIT License (MIT)](https://github.com/bdjibril/micro-worker/blob/master/LICENSE)
 
 ## Release History
 * 0.1.12 Made the Sync Module stable
