@@ -35,6 +35,7 @@ class Worker
       console.log "Worker Connected. Type : #{@workerType}, ID : #{@workerUuid}"
       socket.emit "registerworker", {
         type: @workerType
+        nextType: @nextWorkerType
         uuid: @workerUuid
       }
 
