@@ -18,6 +18,9 @@
   <img src="https://travis-ci.org/bdjibril/micro-worker.svg?branch=master" alt="Build Status"/>
 </a>
 
+<a href="https://github.com/bdjibril/micro-worker/blob/master/LICENSE">
+  <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT licensed"/>
+</a>
 
 <br/>
 <br/>
@@ -206,10 +209,6 @@ new SampleSync config
 ```bash
 npm test
 ```
-
-## LICENSE
-
-[The MIT License (MIT)](https://github.com/bdjibril/micro-worker/blob/master/LICENSE)
 
 ## Release History
 * 0.1.12 Made the Sync Module stable
