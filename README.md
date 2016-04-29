@@ -211,6 +211,9 @@ npm test
 ```
 
 ## Release History
+* 0.1.17 Added fethers-hooks as an explicit dependency
+* 0.1.14 - 0.1.16 Documentation Updates
+* 0.1.13 Sync Module fixes (Cleanup)
 * 0.1.12 Made the Sync Module stable
 * 0.1.11 Performance Improvements : **The workers get registered and unregistered in realtime using sockets connect and disconnect events as opposed to the timed heartbeat mechanism used before**
 * 0.1.7 Bug fixes for **Cannot read property 'updateLastUsed' of undefined**
