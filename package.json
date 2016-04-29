@@ -1,6 +1,6 @@
 {
   "name": "micro-worker",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "This repository contains a framework that helps create scalable and interconnected nodejs microservices.",
   "main": "index.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "grunt-contrib-coffee": "^0.13.0"
   },
   "dependencies": {
+    "async": "^2.0.0-rc.3",
     "body-parser": "^1.14.0",
     "feathers": "^1.1.1",
     "feathers-client": "^0.2.0",
