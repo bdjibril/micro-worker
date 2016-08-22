@@ -5,8 +5,8 @@ feathers = require "feathers-client"
 io = require "socket.io-client"
 
 async = require "async"
-
 _ = require "underscore"
+moment = require "moment"
 
 
 # Generic class for the Syncs
@@ -48,18 +48,20 @@ class Sync
   # using fat arrow since this is used as a callback
   handleEntitiesFound: (error, entities) =>
     if error or entities.length is 0
-      console.log "No SYNCABLE entities found will not attempt any sync"
+      console.log "No SYNCABLE #{@SYNC_ENTITY}(s) found will not attempt any sync"
 
       @throttledStartSync()
 
     else
-      # add where last sync is < some timeout
+      # only synching entities that are overdue for sync
+      entitiesToSync = _.filter entities,  (entity) ->
+        entity.last_sync_at is undefined or moment().subtract(@SYNC_INTERVAL * 10, "ms").isAfter entity.last_sync_at
 
-      async.eachLimit entities, @CONCURRENT_SYNC, @syncEntity, (err) =>
+      async.eachLimit entitiesToSync, @CONCURRENT_SYNC, @syncEntity, (err) =>
         if err
-          console.log "Some entities did not Go trough all the tests.", err
+          console.log "Some #{@SYNC_ENTITY}(s) did not Go trough all the tests.", err
         else
-          console.log "All entities Went trough all the tests."
+          console.log "All #{@SYNC_ENTITY}(s) Went trough all the tests."
 
         @throttledStartSync()
 
@@ -77,7 +79,10 @@ class Sync
               innerCallback null, updatedEntity
 
     waterFallFunctions = [updateLastSync]
-    waterFallFunctions.push wFunction for wFunction in @syncChecks
+
+    # We sould never sync immediately (if the last_sync_at is not set)
+    if entity.last_sync_at
+      waterFallFunctions.push wFunction for wFunction in @syncChecks
 
     syncCb = @syncCallback
 

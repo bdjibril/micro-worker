@@ -211,6 +211,10 @@ npm test
 ```
 
 ## Release History
+* 0.1.19 Now only sync entities where the last_sync is overdue per the sync interval
+         Added async as an explicit dependency
+         Display the sync entity name in the logs 
+* 0.1.18 Added async as an explicit dependency
 * 0.1.17 Added fethers-hooks as an explicit dependency
 * 0.1.14 - 0.1.16 Documentation Updates
 * 0.1.13 Sync Module fixes (Cleanup)
