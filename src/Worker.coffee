@@ -14,7 +14,7 @@ WorkerHeartbeat = require "./WorkerHeartbeat"
 
 class Worker
 
-  constructor: (@config, @workerType, @nextWorkerType, @SYNC_ENDPOINT = "sync") ->
+  constructor: (@config, @workerType, @nextWorkerType, @SYNC_ENDPOINT = "sync", @SYNC_ENTITY="entity", @ENTITY_ENDPOINT = "entities") ->
 
     address = "#{@config.serverUrl}:#{@config.serverPort}"
 
@@ -101,10 +101,28 @@ class Worker
             data.last_worked_on = (new Date).getTime()
 
             # update the last worked on for the nested entity as well
-            Object.keys(data).forEach (key) ->
-              value = data[key]
-              type = if Array.isArray(value) then "array" else typeof value
-              data[key].last_worked_on = (new Date).getTime() if type is "object"
+            if data[@SYNC_ENTITY]
+              data[@SYNC_ENTITY].last_worked_on = (new Date).getTime()
+              entityEndpoint = @app.service @ENTITY_ENDPOINT
+              # Update the last worked on on the server
+              entityEndpoint.patch data[@SYNC_ENTITY]._id, last_worked_on: data[@SYNC_ENTITY].last_worked_on, (error, result) ->
+                unless error
+                  console.log "Success pathing the last_worked_on for  ", result
+            else
+              Object.keys(data).forEach (key) =>
+                value = data[key]
+                type = if Array.isArray(value) then "array" else typeof value
+                data[key].last_worked_on = (new Date).getTime() if type is "object"
+                if data[key]?._id?
+                  try
+                    entityEndpoint = @app.service "#{key}s"
+                    # Update the last worked on on the server
+                    entityEndpoint.patch data[key]._id, last_worked_on: data[key].last_worked_on, (error, result) ->
+                      unless error
+                        console.log "Success pathing the last_worked_on for  ", result
+                  catch e
+                    console.log e
+                
 
             # Send data to the next worker
             nextWorkerEndpoint.create data, (error, result) ->

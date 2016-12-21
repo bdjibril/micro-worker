@@ -211,6 +211,7 @@ npm test
 ```
 
 ## Release History
+* 0.1.24 If a worker does not explicitly specify the ENTITY_ENDPOINT we will construct it from the nested object key name and will update the entity on the server
 * 0.1.23 Fixed Bug in 0.1.22
 * 0.1.22 update the `last_worked_on` for the nested entity as well (Deprecated Bug)
 * 0.1.21 Compiled js for latest Changes in 0.1.20
