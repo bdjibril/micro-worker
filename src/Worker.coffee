@@ -97,6 +97,9 @@ class Worker
             # Add the workerUuid
             data.workerUuid = nextWorkerHeartbeat.uuid
 
+            # update the last worked on
+            data.last_worked_on = (new Date).getTime()
+
             # Send data to the next worker
             nextWorkerEndpoint.create data, (error, result) ->
               unless error
