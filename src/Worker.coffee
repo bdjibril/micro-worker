@@ -100,6 +100,12 @@ class Worker
             # update the last worked on
             data.last_worked_on = (new Date).getTime()
 
+            # update the last worked on for the nested entity as well
+            Object.keys(obj).forEach (key) ->
+              value = obj[key]
+              type = if Array.isArray(value) then "array" else typeof value
+              obj[key].last_worked_on = (new Date).getTime() if type is "object"
+
             # Send data to the next worker
             nextWorkerEndpoint.create data, (error, result) ->
               unless error
