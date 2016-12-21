@@ -211,7 +211,8 @@ npm test
 ```
 
 ## Release History
-* 0.1.22 update the `last_worked_on` for the nested entity as well
+* 0.1.23 Fixed Bug in 0.1.22
+* 0.1.22 update the `last_worked_on` for the nested entity as well (Deprecated Bug)
 * 0.1.21 Compiled js for latest Changes in 0.1.20
 * 0.1.20 Update the `last_worked_on` when a worker gets an entity
 * 0.1.19 Now only sync entities where the last_sync is overdue per the sync interval
