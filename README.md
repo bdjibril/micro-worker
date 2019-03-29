@@ -29,6 +29,9 @@ This repository contains a framework that helps create `scalable` and `inter-con
 
 [![NPM](https://nodei.co/npm/micro-worker.png)](https://nodei.co/npm/micro-worker/)
 
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbdjibril%2Fmicro-worker.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbdjibril%2Fmicro-worker?ref=badge_large)
+
 ## Installation
 ```bash
   npm install micro-workers --save
@@ -36,6 +39,7 @@ This repository contains a framework that helps create `scalable` and `inter-con
 
 ## Diagram
 [![Diagram](https://cdn.rawgit.com/bdjibril/micro-worker/master/assets/Worker%20Plateform%20Diagram.svg)](https://cdn.rawgit.com/bdjibril/micro-worker/master/assets/Worker%20Plateform%20Diagram.svg)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbdjibril%2Fmicro-worker.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbdjibril%2Fmicro-worker?ref=badge_shield)
 
 ## Usage
 Most of the classes require a configuration object containing the server information, as well as the endpoints. This can be created on the fly inside of your programs or passed in as a module.
